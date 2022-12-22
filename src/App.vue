@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="p-5" style="background-color: lightcoral; height: 100vh;">
+    <b-card>
+      <p class="fs-2">{{ jokes?.setup }}</p>
+      <p class="fs-5">{{ jokes?.punchline }}</p>
+      <div class="d-flex justify-content-end">
+        <button class="bg-danger rounded border border-none text-white py-1 px-4" @click="reloadPage">Reload</button>
+      </div>
+    </b-card>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from 'axios'
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      jokes: []
+    }
+  },
+
+  async mounted() {
+    let result = await axios.get("https://official-joke-api.appspot.com/random_joke")
+    this.jokes = result?.data
+    console.log(this.jokes);
+  },
+  methods: {
+    reloadPage() {
+      window.location.reload()
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
